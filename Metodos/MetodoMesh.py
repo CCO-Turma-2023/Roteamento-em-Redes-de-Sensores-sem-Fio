@@ -3,22 +3,15 @@ from OperacoesGrafos import operações_grafos as og, CriaRede as cr, plotGrafos
 
 bateriaSensor = 50
 
+
 def menuMesh():
     print("Quanto de bateria as meshs irão ter?")
     print("-1 Para infinito")
     qtdBaterias = int(input("Digite: "))
     return 1000000000000 if qtdBaterias == -1 else qtdBaterias
 
-# Atualiza bateria das meshs
-def atualizarBateriaMesh(bateria, matriz):
-    for i in range(1, 5):
-        if bateria[i] > 0:
-            consumo = (100 * 2000 + 0.02 * 2000 * (matriz[i][0] ** 2)) / 1000000000
-            bateria[i] = max(bateria[i] - consumo, 0)
-            if bateria[i] == 0:
-                og.removeVertice(matriz, i)
 
-def atualizarBateriaNos(bateria, matriz, tamanho): # Atualiza bateria dos nos
+def CalculaGastoMesh(bateria, matriz, tamanho): # Atualiza bateria dos nos
     for i in range(5, tamanho + 5):
         if bateria[i] > 0:
             for j in range(5):
@@ -42,6 +35,13 @@ def atualizarBateriaNos(bateria, matriz, tamanho): # Atualiza bateria dos nos
                         # Desconecta os nós zerados da rede
                         og.removeVertice(matriz, i)
                         break
+    for i in range(1, 5):
+        if bateria[i] > 0:
+            consumo = (100 * 2000 + 0.02 * 2000 * (matriz[i][0] ** 2)) / 1000000000
+            bateria[i] = max(bateria[i] - consumo, 0)
+            if bateria[i] == 0:
+                og.removeVertice(matriz, i)
+
 
 def encontrar_primeiro_no_morto(bateria, primeiroNoMorto):
     if bateria.count(0) > 0:
@@ -59,8 +59,7 @@ def simulacao_bateria(bateria, matriz, qtdBaterias, tamanho, coordenadas_nova): 
     iteracoes = 0
 
     while bateria.count(0) < tamanho and bateria[1:5].count(0) <= 3 and bateria.count(0) <= (tamanho * 0.80):
-        atualizarBateriaNos(bateria, matriz, tamanho)
-        atualizarBateriaMesh(bateria, matriz)
+        CalculaGastoMesh(bateria, matriz, tamanho)
 
         if bateria.count(0) > 0 and primeiroNoMorto == 0:
             primeiroNoMorto = encontrar_primeiro_no_morto(bateria, primeiroNoMorto)
@@ -74,9 +73,6 @@ def simulacao_bateria(bateria, matriz, qtdBaterias, tamanho, coordenadas_nova): 
 
 
 def printResultados(iteracoes, bateria, primeiroNoMorto, iteracoesMorto, qtdBaterias):
-    dias = (iteracoes * 2) // 24  # Iterações em dias
-    horas = (iteracoes * 2) % 24  # Iterações em horas
-
     print(f"Bateria Restante da Rede: \n {np.array(bateria)}")
     print ("A rede durou {} iterações. ({} anos e {} meses)".format(iteracoes,(iteracoes * 2 / 24) // 365, ((iteracoes * 2 / 24) % 365) // 30))
     print(f"Morreram {bateria.count(0)} sensores.")

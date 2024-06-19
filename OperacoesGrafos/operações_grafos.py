@@ -3,12 +3,8 @@ def verificaAdjacencia(matriz, vi, vj):
     return bool(matriz[vi][vj])
 
 
-def insereAresta(matriz, vi, vj, distancia):
-    matriz[vi][vj] = ((50 * 2000) + (0.010 * 2000 * (distancia*distancia)) + (50 * 2000))/1000000000
-    matriz[vj][vi] = ((50 * 2000) + (0.010 * 2000 * (distancia*distancia)) + (50 * 2000))/1000000000
-    return matriz
-
 def insereArestaEnergia(matriz, vi, vj, distancia):
+    # Calculando a energia e transformando em joule
     matriz[vi][vj] = ((50 * 2000) + (0.010 * 2000 * (distancia*distancia)) + (50 * 2000))/1000000000
     matriz[vj][vi] = ((50 * 2000) + (0.010 * 2000 * (distancia*distancia)) + (50 * 2000))/1000000000
     return matriz
@@ -19,12 +15,8 @@ def insereArestaDistancia(matriz, vi, vj, distancia):
     return matriz
 
 def insereArestaDigrafo(matriz, vi, vj, distancia):
+    # Calculando a energia e transformando em joule
     matriz[vi][vj] = ((50 * 2000) + (0.010 * 2000 * (distancia*distancia)) + (50 * 2000))/1000000000
-    return matriz
-
-def insereArestaDistancia(matriz, vi, vj, distancia):
-    matriz[vi][vj] = distancia
-    matriz[vj][vi] = distancia
     return matriz
 
 

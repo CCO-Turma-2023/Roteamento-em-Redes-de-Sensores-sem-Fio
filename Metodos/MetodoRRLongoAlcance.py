@@ -61,6 +61,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
 
     cd.preencher_matrizEnergia(matriz, tamanho, coordenadas_nova)
 
+    # Rota das 4 seções até o clusterhead
     rota1 = og.dijkstra(matriz, filaRR1[0])[0]
     rota2 = og.dijkstra(matriz, filaRR2[0])[0]
     rota3 = og.dijkstra(matriz, filaRR3[0])[0]
@@ -79,21 +80,26 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
 
     clusterheadSecoes = [filaRR1[0], filaRR2[0], filaRR3[0], filaRR4[0]]
 
+    # Fila do Round Robin das 4 seções até o clusterhead
     filaRR1.append(filaRR1.pop(0))
     filaRR2.append(filaRR2.pop(0))
     filaRR3.append(filaRR3.pop(0))
     filaRR4.append(filaRR4.pop(0))
 
+    # Bateria do clusterhead de cada seção usada para saber se o clusterhead perdeu 20% da bateria
     bateriaSecao1 = bateriaSensor
     bateriaSecao2 = bateriaSensor
     bateriaSecao3 = bateriaSensor
     bateriaSecao4 = bateriaSensor
 
+    # Guardar os mortos ao final de cada iteração para saber se houve algum nó novo morto ao voltar para
+    # iterar a seção, para ai trocar a rota do dijkstra
     mortosSecoes1 = []
     mortosSecoes2 = []
     mortosSecoes3 = []
     mortosSecoes4 = []
 
+    # Ids do primeiro e ultimo vértice de cada seção
     inicioSecao1 = 1
     fimSecao1 = len(secoes[0])
 
@@ -124,6 +130,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
             if not filaRR1:
                 vidaSecoes[0] = False
             else:
+                # Definindo as variáveis para simular a rede
                 inicio = inicioSecao1
                 mortosSecao = mortosSecoes1
                 fim = fimSecao1
@@ -135,6 +142,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
 
                 IniciarTeste(cod)
 
+                # Atribuindo as variáveis que podem ser alteradas na função às variáveis locais
                 bateriaSecao1 = bateriaSecao
                 mortosSecoes1 = mortosSecao
                 filaRR1 = filaRR
@@ -144,6 +152,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
             if not filaRR2:
                 vidaSecoes[1] = False
             else:
+                # Definindo as variáveis para simular a rede
                 inicio = inicioSecao2
                 mortosSecao = mortosSecoes2
                 fim = fimSecao2
@@ -155,6 +164,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
 
                 IniciarTeste(cod)
 
+                # Atribuindo as variáveis que podem ser alteradas na função às variáveis locais
                 bateriaSecao2 = bateriaSecao
                 mortosSecoes2 = mortosSecao
                 filaRR2 = filaRR
@@ -164,6 +174,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
             if not filaRR3:
                 vidaSecoes[2] = False
             else:
+                # Definindo as variáveis para simular a rede
                 inicio = inicioSecao3
                 mortosSecao = mortosSecoes3
                 fim = fimSecao3
@@ -175,6 +186,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
 
                 IniciarTeste(cod)
 
+                # Atribuindo as variáveis que podem ser alteradas na função às variáveis locais
                 bateriaSecao3 = bateriaSecao
                 mortosSecoes3 = mortosSecao
                 filaRR3 = filaRR
@@ -184,6 +196,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
             if not filaRR4:
                 vidaSecoes[3] = False
             else:
+                # Definindo as variáveis para simular a rede
                 inicio = inicioSecao4
                 mortosSecao = mortosSecoes4
                 fim = fimSecao4
@@ -195,11 +208,13 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
 
                 IniciarTeste(cod)
 
+                # Atribuindo as variáveis que podem ser alteradas na função às variáveis locais
                 bateriaSecao4 = bateriaSecao
                 mortosSecoes4 = mortosSecao
                 filaRR4 = filaRR
                 rota4 = rota
 
+        # Calculando os gastos dos sensores no raio da rádio base
         for sensor in nosRadioBase:
             if sensor not in mortos:
 
@@ -210,6 +225,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
                     og.removeVertice(matriz, sensor)
                     mortos.append(sensor)
 
+                    # Atualizando as rotas caso algum sensor de alguma seção morreu
                     if sensor in rota1[inicioSecao1: fimSecao1 + 1]:
                         rota1 = og.dijkstra(matriz, clusterheadSecoes[0])[0]
 
@@ -261,6 +277,8 @@ def IniciarTeste(cod):
     global mortosSecao, filaRR, clusterheadSecoes, vidaSecoes, secoes, bateriaSecao, secao, rota, bateria, \
         matriz, matriz_copia, coordenadas_nova, inicio, fim, clusterhead
 
+    # Verificando se houve algum sensor que morreu durante as outras iterações, caso tenha, atualizar dijkstra
+    # e clusterhead se necessário
     if mortos != mortosSecao:
         for elem in mortos:
             if elem in filaRR:
@@ -274,6 +292,7 @@ def IniciarTeste(cod):
             clusterhead = clusterheadSecoes[secao]
         rota = og.dijkstra(matriz, clusterheadSecoes[secao])[0]
 
+    # Verificando se o clusterHead perdeu 20% da bateria ou se acabou a bateria dele
     if clusterheadSecoes[secao] in mortos or bateriaSecao - 10 > bateria[clusterheadSecoes[secao]]:
         clusterheadSecoes[secao] = filaRR[0]
         filaRR.append(filaRR.pop(0))
@@ -284,26 +303,31 @@ def IniciarTeste(cod):
 
     SimulacaoRede(cod)
 
+    # Verificando se algum sensor na fila do Round Robin está morto
     for elem in filaRR:
         if elem in mortos:
             filaRR.remove(elem)
 
+    # Contar a quantidade de nos que não possuem conexão com a rádio base
+    nosSemConexao = 0
+    for i in range(inicio, fim + 1):
+        if rota[i] == clusterheadSecoes[secao] and matriz[i][clusterheadSecoes[secao]] <= 0:
+            nosSemConexao += 1
+
+    # Caso a fila de Round Robin esteja vazia ou 80% dos sensores perderam conexão com a rádio base
+    if nosSemConexao >= len(secoes[secao]) * 0.80 or not filaRR:
+
+        vidaSecoes[secao] = False
+        return
+
+    # Caso o clusterhead morreu, atualizar ele
     if clusterheadSecoes[secao] not in filaRR and filaRR:
         clusterheadSecoes[secao] = filaRR[0]
         filaRR.append(filaRR.pop(0))
         bateriaSecao = bateria[clusterheadSecoes[secao]]
         rota = og.dijkstra(matriz, clusterheadSecoes[secao])[0]
 
-    nosSemConexao = 0
-    for i in range(inicio, fim + 1):
-        if rota[i] == clusterheadSecoes[secao] and matriz[i][clusterheadSecoes[secao]] <= 0:
-            nosSemConexao += 1
-
-    if nosSemConexao >= len(secoes[secao]) * 0.80 or not filaRR:
-
-        vidaSecoes[secao] = False
-        return
-
+    # Transmitindo o sinal do clusterhead até a radio base
     if clusterheadSecoes[secao] not in mortos:
         distancia = cr.distancia_vertices(coordenadas_nova[0][0], coordenadas_nova[0][1],
                                           coordenadas_nova[clusterheadSecoes[secao]][0],

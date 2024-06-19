@@ -2,7 +2,7 @@ import numpy as np
 from OperacoesGrafos import operações_grafos as og, CriaRede as cr, plotGrafos as pg, Coordenadas as cd
 
 
-def iteracaoDijkstra(matriz, rota, bateria, matriz_principal, mortos, cod):
+def SimulacaoRede(matriz, rota, bateria, matriz_principal, mortos, cod):
     percorridos = []
     for i in range(1, len(matriz)):
         if i not in mortos and (i not in percorridos or cod == 1):
@@ -78,7 +78,7 @@ def TesteDijkstra(coordenadas, tamanho):
     iteracao = 0
     nosSemConexao = 0
     while nosSemConexao <= tamanho * 0.80:
-        matriz, matriz_copia, rota, mortos, bateria = iteracaoDijkstra(matriz_copia, rota, bateria, matriz, mortos, cod)
+        matriz, matriz_copia, rota, mortos, bateria = SimulacaoRede(matriz_copia, rota, bateria, matriz, mortos, cod)
         iteracao += 1
 
         nosSemConexao = 0
