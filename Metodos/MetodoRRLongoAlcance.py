@@ -112,7 +112,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
     iteracao = 0
     while vidaSecoes.count(False) < 3:
 
-        if (iteracao + 1) % 10000:
+        if (iteracao + 1) % 4000:
             matriz_copia = []
             for i in range(0, tamanho + 1):
                 lista_aux = [0] * (tamanho + 1)
@@ -227,7 +227,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
             primeiroMorto = True
             primeiroNoMorto = iteracao
 
-        if iteracao % 10000 == 0 or iteracao == 1:
+        if iteracao % 4000 == 0 or iteracao == 1:
             for elem in mortos:
                 og.removeVertice(matriz_copia, elem)
             pg.desenhar_digrafo(matriz_copia, coordenadas_nova, "Round {}".format(iteracao), clusterheadSecoes)
@@ -284,27 +284,25 @@ def IniciarTeste(cod):
 
     SimulacaoRede(cod)
 
-    for elem in mortos:
-        if elem in filaRR:
+    for elem in filaRR:
+        if elem in mortos:
             filaRR.remove(elem)
+
+    if clusterheadSecoes[secao] not in filaRR and filaRR:
+        clusterheadSecoes[secao] = filaRR[0]
+        filaRR.append(filaRR.pop(0))
+        bateriaSecao = bateria[clusterheadSecoes[secao]]
+        rota = og.dijkstra(matriz, clusterheadSecoes[secao])[0]
 
     nosSemConexao = 0
     for i in range(inicio, fim + 1):
         if rota[i] == clusterheadSecoes[secao] and matriz[i][clusterheadSecoes[secao]] <= 0:
             nosSemConexao += 1
 
-    if (nosSemConexao >= len(secoes[secao]) * 0.80 and clusterheadSecoes[secao] not in mortos) or not filaRR:
+    if nosSemConexao >= len(secoes[secao]) * 0.80 or not filaRR:
 
-        for elem in mortos:
-            og.removeVertice(matriz_copia, elem)
         vidaSecoes[secao] = False
         return
-
-    if clusterheadSecoes[secao] not in filaRR:
-        clusterheadSecoes[secao] = filaRR[0]
-        filaRR.append(filaRR.pop(0))
-        bateriaSecao = bateria[clusterheadSecoes[secao]]
-        rota = og.dijkstra(matriz, clusterheadSecoes[secao])[0]
 
     if clusterheadSecoes[secao] not in mortos:
         distancia = cr.distancia_vertices(coordenadas_nova[0][0], coordenadas_nova[0][1],
