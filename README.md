@@ -1,7 +1,7 @@
 # Algoritmos em Grafos
 ## Cenário 5: Roteamento em Redes de Sensores Sem Fio
 
-<div>Professor Rafael</div>
+<div>Professor Rafael de Magalhaes Dias Frinhani</div>
 <div>Gabriel Henrique dos Santos Alves - 2023010208</div>
 <div>Caio Mendes Ribeiro da Rosa - 2023002135</div>
 <div>Davi Dias Monsores dos Santos - 2023001272</div>
