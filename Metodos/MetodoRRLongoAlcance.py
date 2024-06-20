@@ -118,7 +118,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
     iteracao = 0
     while vidaSecoes.count(False) < 3:
 
-        if (iteracao + 1) % 4000:
+        if (iteracao + 1) % 10000:
             matriz_copia = []
             for i in range(0, tamanho + 1):
                 lista_aux = [0] * (tamanho + 1)
