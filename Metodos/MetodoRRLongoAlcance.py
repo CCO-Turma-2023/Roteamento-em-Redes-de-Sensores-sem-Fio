@@ -243,7 +243,7 @@ def testeRR_LongoAlcance(coordenadas, tamanho):
             primeiroMorto = True
             primeiroNoMorto = iteracao
 
-        if iteracao % 4000 == 0 or iteracao == 1:
+        if iteracao % 10000 == 0 or iteracao == 1:
             for elem in mortos:
                 og.removeVertice(matriz_copia, elem)
             pg.desenhar_digrafo(matriz_copia, coordenadas_nova, "Round {}".format(iteracao), clusterheadSecoes)

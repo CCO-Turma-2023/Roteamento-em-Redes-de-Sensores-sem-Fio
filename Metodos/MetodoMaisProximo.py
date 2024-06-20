@@ -19,7 +19,7 @@ def TesteMaisProximo (coordenadas, tamanho):
     while nao_mandou + bateria.count(0) < tamanho * 0.80:
         sensor = 1
 
-        if iteracoes % 5000 == 0:
+        if iteracoes % 3000 == 0:
             matriz_Representa_Caminho = []
             for i in range(0, tamanho + 1):
                 lista_aux = [0] * (tamanho + 1)
@@ -79,7 +79,7 @@ def TesteMaisProximo (coordenadas, tamanho):
                     iteracaoPrimeiroMorto = iteracoes
                     primeroNoMorto = i
 
-        if iteracoes % 1000 == 0:
+        if iteracoes % 3000 == 0:
             for i in range(tamanho + 1):
                 if matriz[i][0] == -1:
                     og.removeVertice(matriz_Representa_Caminho, i)
